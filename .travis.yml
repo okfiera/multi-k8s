@@ -4,7 +4,7 @@ services:
 
 before_install:
   # Build development images to test them
-  - docker build -t okfiera/react-test -f ./client/Dockerfile.dev
+  - docker build -t okfiera/react-test -f ./client/Dockerfile.dev ./client
 
 script:
   # Test development images
