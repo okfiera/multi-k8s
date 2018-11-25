@@ -15,11 +15,11 @@ after_success:
   - docker build -t sincronize/multi-client ./client
   - docker build -t sincronize/multi-nginx ./nginx
   - docker build -t sincronize/multi-server ./server
-  - docker build -t sincronize/multi-workder ./workder
+  - docker build -t sincronize/multi-worker ./worker
   # Log into the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take those images and push them to docker hub
   - docker push sincronize/multi-client
   - docker push sincronize/multi-nginx
   - docker push sincronize/multi-server
-  - docker push sincronize/multi-workder
+  - docker push sincronize/multi-worker
