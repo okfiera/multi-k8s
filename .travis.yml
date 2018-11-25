@@ -4,22 +4,22 @@ services:
 
 before_install:
   # Build development images to test them
-  - docker build -t okfiera/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t sincronize/react-test -f ./client/Dockerfile.dev ./client
 
 script:
   # Test development images
-  - docker run okfiera/react-test npm test -- --coverage
+  - docker run sincronize/react-test npm test -- --coverage
 
 after_success:
   # Build production images
-  - docker build -t okfiera/multi-client ./client
-  - docker build -t okfiera/multi-nginx ./nginx
-  - docker build -t okfiera/multi-server ./server
-  - docker build -t okfiera/multi-workder ./workder
+  - docker build -t sincronize/multi-client ./client
+  - docker build -t sincronize/multi-nginx ./nginx
+  - docker build -t sincronize/multi-server ./server
+  - docker build -t sincronize/multi-workder ./workder
   # Log into the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take those images and push them to docker hub
-  - docker push okfiera/multi-client
-  - docker push okfiera/multi-nginx
-  - docker push okfiera/multi-server
-  - docker push okfiera/multi-workder
+  - docker push sincronize/multi-client
+  - docker push sincronize/multi-nginx
+  - docker push sincronize/multi-server
+  - docker push sincronize/multi-workder
