@@ -1,7 +1,12 @@
 sudo: required
 services:
   - docker
+env:
+  global:
+    - GIT_SHA=$(git rev_parse HEAD)
+    - CLOUDSDK_CORE_DISABLE_PROMPS=1
 before_install:
+  # Encrypted google cloud IAM file
   - openssl aes-256-cbc -K $encrypted_0c35eebf403c_key -iv $encrypted_0c35eebf403c_iv -in service-account.json.enc -out service-account.json -d
   # Install Google Cloud SDK
   - curl https://sdk.cloud.google.com | bash > /dev/null;
@@ -10,3 +15,24 @@ before_install:
   - gcloud components update kubectl
   # Google Cloud SDK Auth from json file
   - gcloud auth activate-service-account --key-file service-account.json
+  # Set Google Cloud project
+  - gcloud config set project multi-k8s-224812
+  # Set Google Cloud region
+  - gcloud config set compute/zone europe-west4-c
+  # Set cluster
+  - gcloud container clusters get-credentials multi-k8s
+  # Set DockerHub credentials from Travis saved variables (in Dashboard)
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  # Build developer images for to test them
+  - docker build -t sincronize/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  # Run tests
+  - docker run sincronize/react-test npm test  -- --coverage
+
+deploy:
+  # There is not any provider for Kubernetes, so we need excute the steps directly from a file (deploy.sh)
+  provider: script
+  script: bash ./deploy.sh
+  on:
+    branch: master
