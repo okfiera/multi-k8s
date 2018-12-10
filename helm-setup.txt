@@ -1,0 +1,5 @@
+./get_helm.sh
+helm init --service-account tiller --upgrade
+
+// Instal cert-manager 
+helm install --name cert-manager --namespace kube-system --set ingressShim.defaultIssuerName=letsencrypt-staging --set ingressShim.defaultIssuerKind=ClusterIssuer stable/cert-manager --version v0.3.0
