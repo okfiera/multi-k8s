@@ -16,21 +16,9 @@ spec:
   tls:
     - hosts:
         - shoowee.es
-        - www.shoowee.es
       secretName: shoowee-es
   rules:
     - host: shoowee.es
-      http:
-        paths:
-          - path: /
-            backend:
-              serviceName: client-cluster-ip-service
-              servicePort: 3000
-          - path: /api/
-            backend:
-              serviceName: server-cluster-ip-service
-              servicePort: 5000
-    - host: www.shoowee.es
       http:
         paths:
           - path: /
